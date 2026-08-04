@@ -148,7 +148,7 @@ equalsButton.addEventListener("click", () => {
         firstNumber = ""    
     }
     
-    display.textContent = result
+    display.textContent = result;
 })
 
  clearButton.addEventListener("click",() => {
