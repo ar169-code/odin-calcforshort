@@ -60,8 +60,12 @@ for (let button of [...buttons].slice(0,-2)) {
     button.addEventListener("click", () => {
         const currentInput = button.textContent
 
-        if (!firstNumber) {
+        if (firstNumber === "") {
             display.textContent = ""
+            
+            if (operations.includes(currentInput)) {
+                return
+            }
         }
 
         display.textContent += currentInput;
@@ -77,6 +81,12 @@ for (let button of [...buttons].slice(0,-2)) {
             return;
         }
 
+        if (!secondNumber && operations.includes(currentInput)) {
+            display.textContent = display.textContent.slice(0,-2) + currentInput;
+            currentOperator = currentInput;
+            return
+        }
+
         if (!operations.includes(currentInput)) {
             secondNumber += currentInput;
             return;
@@ -88,7 +98,7 @@ for (let button of [...buttons].slice(0,-2)) {
         currentOperator = currentInput;
         secondNumber = "";
 
-        if (+firstNumber) {
+        if (Number.isFinite(+firstNumber)) {
             display.textContent = `${result}${currentInput}`;
         } else {
             resetCalc();
@@ -103,7 +113,7 @@ const equalsButton = document.querySelector(".equals");
 const clearButton = document.querySelector(".clear");
 
 function resetCalc() {
-    display.textContent = ""
+    display.textContent = "";
     firstNumber = "";
     secondNumber = "";
     currentOperator = null;
@@ -111,14 +121,21 @@ function resetCalc() {
 }
 
 equalsButton.addEventListener("click", () => {
-    const result = operate(firstNumber, secondNumber, currentOperator)
-    if (!secondNumber) {
+    if (!secondNumber || !firstNumber) {
         return
     }
 
+    const result = operate(firstNumber, secondNumber, currentOperator)
+
     resetCalc();
-    firstNumber = result;
-    display.textContent = result;
+
+    if (Number.isFinite(+result)) {
+        firstNumber = result;
+    } else {
+        firstNumber = ""    
+    }
+    
+    display.textContent = result
 })
 
  clearButton.addEventListener("click",resetCalc)
