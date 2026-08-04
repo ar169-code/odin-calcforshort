@@ -22,7 +22,7 @@ let secondNumber = "";
 let beforeOperator = true;
 const operations = "+-*/";
 
-
+// Create function to perform operation based on the user's operand
 function operate(a, b, operator) {
     let result
 
@@ -45,9 +45,9 @@ function operate(a, b, operator) {
 }
 
 const display = document.querySelector(".display")
-
 const buttons = document.querySelectorAll("button")
 
+// Add event listeners to the buttons except = and clear
 for (let button of [...buttons].slice(0,-2)) {
     button.addEventListener("click", () => {
         const currentInput = button.textContent
@@ -79,6 +79,7 @@ const equals = document.querySelector(".equals");
 const clear = document.querySelector(".clear");
 
 function resetCalc() {
+    display.textContent = ""
     firstNumber = "";
     secondNumber = "";
     currentOperator = null;
@@ -92,7 +93,4 @@ equals.addEventListener("click", () => {
     display.textContent = result;
 })
 
- clear.addEventListener("click",() => {
-    display.textContent = ""
-    resetCalc()
- })
+ clear.addEventListener("click",resetCalc)
