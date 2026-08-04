@@ -26,6 +26,14 @@ const operations = "+-*/";
 function operate(a, b, operator) {
     let result
 
+    if (b === 0) {
+        result = "Get a load of this guy!"
+        return result
+    }
+
+    a = +a;
+    b = +b;
+
     switch (operator) {
         case "+":
             result = add(a, b);
@@ -51,6 +59,7 @@ const buttons = document.querySelectorAll("button")
 for (let button of [...buttons].slice(0,-2)) {
     button.addEventListener("click", () => {
         const currentInput = button.textContent
+
         if (!firstNumber) {
             display.textContent = ""
         }
@@ -68,15 +77,30 @@ for (let button of [...buttons].slice(0,-2)) {
             return;
         }
 
-        secondNumber += currentInput;
+        if (!operations.includes(currentInput)) {
+            secondNumber += currentInput;
+            return;
+        }
+        
+        const result = operate(firstNumber, secondNumber, currentOperator);
 
+        firstNumber = result;
+        currentOperator = currentInput;
+        secondNumber = "";
+
+        if (+firstNumber) {
+            display.textContent = `${result}${currentInput}`;
+        } else {
+            resetCalc();
+            display.textContent = `${result}`;
+        };
 
     })
 }
 
 // Create functions for equals and clear that have different purposes
-const equals = document.querySelector(".equals");
-const clear = document.querySelector(".clear");
+const equalsButton = document.querySelector(".equals");
+const clearButton = document.querySelector(".clear");
 
 function resetCalc() {
     display.textContent = ""
@@ -86,11 +110,11 @@ function resetCalc() {
     beforeOperator = true;
 }
 
-equals.addEventListener("click", () => {
-    const result = operate(+firstNumber, +secondNumber, currentOperator)
+equalsButton.addEventListener("click", () => {
+    const result = operate(firstNumber, secondNumber, currentOperator)
 
     resetCalc()
     display.textContent = result;
 })
 
- clear.addEventListener("click",resetCalc)
+ clearButton.addEventListener("click",resetCalc)

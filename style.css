@@ -7,3 +7,14 @@
     padding: 10px;
     font-size: 24px;
 }
+
+.calc-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap:10px;
+    justify-content: flex-start;
+}
+
+button {
+    padding: 10px
+}
