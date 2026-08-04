@@ -20,7 +20,9 @@ let firstNumber = "";
 let currentOperator;
 let secondNumber = "";
 let beforeOperator = true;
+let newOperation = true;
 const operations = "+-*/";
+const numbers = "1234567890"
 
 // Create function to perform operation based on the user's operand
 function operate(a, b, operator) {
@@ -62,10 +64,18 @@ for (let button of [...buttons].slice(0,-2)) {
 
         if (firstNumber === "") {
             display.textContent = ""
-            
+
             if (operations.includes(currentInput)) {
                 return
             }
+        }
+
+        if (!newOperation && numbers.includes(currentInput)) {
+            resetCalc();
+            newOperation = true;
+            display.textContent += currentInput;
+            firstNumber += currentInput;
+            return
         }
 
         display.textContent += currentInput;
@@ -74,6 +84,7 @@ for (let button of [...buttons].slice(0,-2)) {
             if (operations.includes(currentInput)) {
                 currentOperator = currentInput;
                 beforeOperator = false;
+                newOperation = true;
                 return;
             }
 
@@ -94,9 +105,10 @@ for (let button of [...buttons].slice(0,-2)) {
         
         const result = operate(firstNumber, secondNumber, currentOperator);
 
-        firstNumber = result;
+        firstNumber = `${result}`;
         currentOperator = currentInput;
         secondNumber = "";
+        newOperation = false;
 
         if (Number.isFinite(+firstNumber)) {
             display.textContent = `${result}${currentInput}`;
@@ -126,11 +138,12 @@ equalsButton.addEventListener("click", () => {
     }
 
     const result = operate(firstNumber, secondNumber, currentOperator)
+    newOperation = false;
 
     resetCalc();
 
     if (Number.isFinite(+result)) {
-        firstNumber = result;
+        firstNumber = `${result}`;
     } else {
         firstNumber = ""    
     }
@@ -138,4 +151,7 @@ equalsButton.addEventListener("click", () => {
     display.textContent = result
 })
 
- clearButton.addEventListener("click",resetCalc)
+ clearButton.addEventListener("click",() => {
+    resetCalc();
+    newOperation = true;
+})
