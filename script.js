@@ -26,7 +26,7 @@ const operations = "+-*/";
 function operate(a, b, operator) {
     let result
 
-    if (b === 0) {
+    if (b === "0" && operator === "/") {
         result = "Get a load of this guy!"
         return result
     }
@@ -113,7 +113,8 @@ function resetCalc() {
 equalsButton.addEventListener("click", () => {
     const result = operate(firstNumber, secondNumber, currentOperator)
 
-    resetCalc()
+    resetCalc();
+    firstNumber = result;
     display.textContent = result;
 })
 
