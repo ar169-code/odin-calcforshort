@@ -112,6 +112,9 @@ function resetCalc() {
 
 equalsButton.addEventListener("click", () => {
     const result = operate(firstNumber, secondNumber, currentOperator)
+    if (!secondNumber) {
+        return
+    }
 
     resetCalc();
     firstNumber = result;
